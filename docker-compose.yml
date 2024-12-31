@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    volumes:
+      - mongo_data:/data/db
+
+  operation-service:
+    build:
+      context: ./operation_service
+    ports:
+      - "8025:8025"
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+      - MONGO_URL=mongodb://admin:admin123@mongo:27017/notification_db?authSource=admin
+    depends_on:
+      - rabbitmq
+      - mongo
+
+  decron-service:
+    build:
+      context: ./decron_service
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+      - MONGO_URL=mongodb://admin:admin123@mongo:27017/notification_db?authSource=admin
+    depends_on:
+      - rabbitmq
+      - mongo
+
+  agent-service:
+    build:
+      context: ./agent_service
+    environment:
+      - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
+      - MONGO_URL=mongodb://admin:admin123@mongo:27017/notification_db?authSource=admin
+    depends_on:
+      - rabbitmq
+      - mongo
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+volumes:
+  mongo_data:
