@@ -34,13 +34,13 @@ func (s *RequestNotificationService) CreateRequestNotification(request_notificat
 		return err
 	}
 
-	err = s.RabbitPublisher.Publish("request_notifications", message)
+	err = s.RabbitPublisher.PublishMessage("create", message)
 	if err != nil {
 		log.Printf("Failed to publish message to RabbitMQ: %v", err)
 		return err
 	}
 
-	log.Println("Request notification published to RabbitMQ")
+	log.Println("Request notification published to RabbitMQ", request_notification)
 	return nil
 }
 

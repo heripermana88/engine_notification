@@ -1,3 +1,4 @@
+// main.go
 package main
 
 import (
@@ -34,12 +35,12 @@ func main() {
 	// Define a simple callback function for processing messages
 	callback := func(message []byte) error {
 		// Logic to process the message
-		log.Printf("Received message main: %s", message)
+		log.Printf("Received message on 'create': %s", message)
 		return nil
 	}
 
 	// Initialize the app with RabbitMQ connection and listener
-	app := app.NewApp(rabbitConn, "request_notifications", callback)
+	app := app.NewApp(rabbitConn, "request_notifications_percobaan", "create", callback)
 
 	log.Println("Server is running on port 8123")
 	log.Fatal(http.ListenAndServe(":8123", app.Router))
