@@ -86,8 +86,8 @@ func consumeMessages(rabbitMQURL, exchangeName, routingKey string) error {
 
 func main() {
 	rabbitMQURL := "amqp://guest:guest@localhost:5672/"
-	exchangeName := "notification_exchange"
-	routingKey := "notification_routing_key"
+	exchangeName := "request_notifications_percobaan"
+	routingKey := "create"
 
 	err := consumeMessages(rabbitMQURL, exchangeName, routingKey)
 	if err != nil {

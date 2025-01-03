@@ -33,12 +33,12 @@ func NewApp(rabbitConn *amqp.Connection, exchange, routingKey string, callback f
 		log.Fatalf("Failed to initialize RabbitMQ Listener: %v", err)
 	}
 
-	// Start listening for RabbitMQ messages
-	go func() {
-		if err := rabbitListener.StartListening(); err != nil {
-			log.Fatalf("Failed to start RabbitMQ Listener: %v", err)
-		}
-	}()
+	// // Start listening for RabbitMQ messages
+	// go func() {
+	// 	if err := rabbitListener.StartListening(); err != nil {
+	// 		log.Fatalf("Failed to start RabbitMQ Listener: %v", err)
+	// 	}
+	// }()
 
 	routes.RegisterRequestNotificationRoutes(router, db, rabbitPublisher) // Register routes
 
